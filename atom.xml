@@ -6,7 +6,7 @@
   <link href="https://jarvanmo.github.io/atom.xml" rel="self"/>
   
   <link href="https://jarvanmo.github.io/"/>
-  <updated>2024-11-29T07:12:53.878Z</updated>
+  <updated>2024-11-29T07:18:31.132Z</updated>
   <id>https://jarvanmo.github.io/</id>
   
   <author>
@@ -17,18 +17,18 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>欢迎来到我的博客</title>
     <link href="https://jarvanmo.github.io/post/0.html"/>
     <id>https://jarvanmo.github.io/post/0.html</id>
     <published>2024-11-29T07:11:33.857Z</published>
-    <updated>2024-11-29T07:12:53.878Z</updated>
+    <updated>2024-11-29T07:18:31.132Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h1><p>终于弄好了。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h2><p>终于弄好了。</p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h1 id=&quot;欢迎来到我的博客&quot;&gt;&lt;a href=&quot;#欢迎来到我的博客&quot; class=&quot;headerlink&quot; title=&quot;欢迎来到我的博客&quot;&gt;&lt;/a&gt;欢迎来到我的博客&lt;/h1&gt;&lt;p&gt;终于弄好了。&lt;/p&gt;
+    <summary type="html">&lt;h2 id=&quot;欢迎来到我的博客&quot;&gt;&lt;a href=&quot;#欢迎来到我的博客&quot; class=&quot;headerlink&quot; title=&quot;欢迎来到我的博客&quot;&gt;&lt;/a&gt;欢迎来到我的博客&lt;/h2&gt;&lt;p&gt;终于弄好了。&lt;/p&gt;
 </summary>
       
     
