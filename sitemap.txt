@@ -1,2 +1,2 @@
-https://github.com/JarvanMo/jarvanmo.github.io/2024/11/29/hello-world/
-https://github.com/JarvanMo/jarvanmo.github.io
+https://jarvanmo.github.io/project/2024/11/29/hello-world/
+https://jarvanmo.github.io/project
