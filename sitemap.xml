@@ -47,15 +47,6 @@
   </url>
   
   <url>
-    <loc>https://jarvanmo.github.io/archives/index.html</loc>
-    
-    <lastmod>2024-12-06</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://jarvanmo.github.io/post/b250e9bb.html</loc>
     
     <lastmod>2024-11-29</lastmod>
@@ -74,20 +65,6 @@
 
   
   <url>
-    <loc>https://jarvanmo.github.io/tags/Socks5/</loc>
-    <lastmod>2024-12-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://jarvanmo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</loc>
-    <lastmod>2024-12-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://jarvanmo.github.io/tags/Flutter/</loc>
     <lastmod>2024-12-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -101,17 +78,31 @@
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>https://jarvanmo.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
+    <loc>https://jarvanmo.github.io/tags/Socks5/</loc>
     <lastmod>2024-12-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
+    <loc>https://jarvanmo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</loc>
+    <lastmod>2024-12-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
+  
+  <url>
     <loc>https://jarvanmo.github.io/categories/Flutter-Dart/</loc>
+    <lastmod>2024-12-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jarvanmo.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2024-12-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
