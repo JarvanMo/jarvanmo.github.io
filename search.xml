@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>简单谈谈dart中几种Map的不同</title>
+    <url>/post/585a8a85.html</url>
+    <content><![CDATA[<p>Dart有几种内置集合(Collections)，比如<code>Set</code>,<code>List</code>以及<code>Map</code>。了解他们在实现上的优点与缺点有助于你去如何使用他们。</p>
+<blockquote>
+<p>本文是在Dart 2.1.1下演示的。如有错误，敬请指正。</p>
+</blockquote>
+<h2 id="什么是Map"><a href="#什么是Map" class="headerlink" title="什么是Map"></a>什么是Map</h2><p>Map是一个关联容器，将键映射到值。 键是唯一的，可以指向一个且只能指向一个值，但值是可以重复的。 键不能为<code>null</code>，但值可以为<code>null</code>。</p>
+<h2 id="Map字面量"><a href="#Map字面量" class="headerlink" title="Map字面量"></a>Map字面量</h2><p>Dart是支持<a href="https://www.dartlang.org/guides/language/language-tour#maps">Map字面量</a>的，因此可以通过下面的方式创建一个Map对象：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gifts = &#123;</span><br><span class="line">  <span class="comment">// Key:    Value</span></span><br><span class="line">  <span class="string">&#x27;first&#x27;</span>: <span class="string">&#x27;partridge&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;second&#x27;</span>: <span class="string">&#x27;turtledoves&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;fifth&#x27;</span>: <span class="string">&#x27;golden rings&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>规范中提到Map字面量必须保持插入顺序。 这意味着<code>gifts</code>是<code>LinkedHashMap</code>的实例。我们来验证下:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">print(&quot;type of gifts:$&#123;gifts.runtimeType&#125;&quot;);</span><br><span class="line">//type of gifts:_InternalLinkedHashMap&lt;String, String&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="new-Map"><a href="#new-Map" class="headerlink" title="new Map()"></a>new Map()</h2><p>Dart支持工厂构造函数，因此我们也可以像这样创建Map：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var gifts= new Map();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从Dart2开始,new是可选的。不再提。</p>
+</blockquote>
+<p>然而<code>Map</code>却是抽象类，这意味着上面的代码实际上是由Map的子类创建的实例。 那么<code>gifts</code>的类型到底是什么？同样地，我们来打印一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> print(&quot;type of gifts:$&#123;gifts.runtimeType&#125;&quot;);</span><br><span class="line">// type of gifts:_InternalLinkedHashMap&lt;dynamic, dynamic&gt;</span><br></pre></td></tr></table></figure>
+
+<p>实际上，在早期版本的Dart 中，<code>new Map()</code>实际上是创建了一个<code>HashMap</code>。 但是， <a href="http://code.google.com/p/dart/issues/detail?id=5803">Dart bug 5803</a>中有提到为了使<code>&#123;&#125;</code>和<code>new Map()</code>返回相同的类型，<code>new Map</code>将很快返回<code>LinkedHashMap</code>的实例。</p>
+<h2 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h2><p><code>LinkedHashMap</code>是有序的，它会按照插入顺序进行迭代键：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var ordered = new LinkedHashMap();</span><br><span class="line">  ordered[&#x27;32352&#x27;] = &#x27;Alice&#x27;;</span><br><span class="line">  ordered[&#x27;95594&#x27;] = &#x27;Bob&#x27;;</span><br><span class="line"></span><br><span class="line">  for (var key in ordered.keys) &#123;</span><br><span class="line">    print(key);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   // 一定是先打印 32352, 然后打印95594</span><br></pre></td></tr></table></figure>
+
+<p>如果改变一个key的值并不会改变key的插入顺序，但如果是先删除再添加就会改变插入顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var ordered = new LinkedHashMap();</span><br><span class="line">  ordered[&#x27;32352&#x27;] = &#x27;Alice&#x27;;</span><br><span class="line">  ordered[&#x27;95594&#x27;] = &#x27;Bob&#x27;;</span><br><span class="line">  ordered[&#x27;45684&#x27;] = &#x27;Kal&#x27;;</span><br><span class="line"></span><br><span class="line">  for (var key in ordered.keys) &#123;</span><br><span class="line">    print(&quot;仅遍历：$key&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ordered[&#x27;95594&#x27;] = &#x27;James&#x27;;</span><br><span class="line">  for (var key in ordered.keys) &#123;</span><br><span class="line">    print(&quot;改变一个值：$key&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ordered.remove(&#x27;95594&#x27;);</span><br><span class="line">  ordered[&#x27;95594&#x27;] = &#x27;Kobe&#x27;;</span><br><span class="line">  for (var key in ordered.keys) &#123;</span><br><span class="line">    print(&quot;改变一个值：$key&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">仅遍历：32352</span><br><span class="line">仅遍历：95594</span><br><span class="line">仅遍历：45684</span><br><span class="line">改变一个值：32352</span><br><span class="line">改变一个值：95594</span><br><span class="line">改变一个值：45684</span><br><span class="line">删除后再添加：32352</span><br><span class="line">删除后再添加：45684</span><br><span class="line">删除后再添加：95594</span><br></pre></td></tr></table></figure>
+<h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p><code>HashMap</code>并不会保证维护数据的插入顺序。当去遍历<code>HashMap</code>时，键值对的顺序是无法得到保证的。<br>可以通过如下方式创建<code>HashMap</code>：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:collection&#x27;</span>;</span><br><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">var</span> gifts= <span class="keyword">new</span> HashMap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当你并不关心键值对的顺序的时候可以使用<code>HashMap</code>。<br> <a href="http://code.google.com/p/dart/source/browse/trunk/dart/sdk/lib/collection/hash_map.dart"> HashMap的源码在此</a>。</p>
+<h2 id="SplayTreeMap"><a href="#SplayTreeMap" class="headerlink" title="SplayTreeMap"></a>SplayTreeMap</h2><p>伸展树（分裂树）是一种自平衡二叉搜索树，它具有可以可以快速访问最近被访问的元素。它能在O(log n)内完成插入、查找和删除操作。</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:collection&#x27;</span>;</span><br><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">var</span> gifts= <span class="keyword">new</span> SplayTreeMap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SplayTreeMap要求所有的键都是同一类型的,:</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> splayTreeMap = SplayTreeMap();</span><br><span class="line">splayTreeMap[<span class="string">&quot;1&quot;</span>] = <span class="string">&quot;s&quot;</span>;</span><br><span class="line">splayTreeMap[<span class="number">1</span>] = <span class="string">&quot;2&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>上面的代码语法是没问题的，但运行时是不允许的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type &#x27;int&#x27; is not a subtype of type &#x27;String&#x27; of &#x27;other&#x27;</span><br></pre></td></tr></table></figure>
+<p>对于经常存储和访问的数据（如缓存），<code>SplayTreeMap</code>是一个不错的选择。 原因是他们使用树旋转将一个元素调到根，以便更频繁地访问。 性能来自树的自我优化。 也就是说，频繁访问的元素移动到更靠近顶部。 但是，如果同时经常访问树，那么使用<code>SplayTreeMap</code>几乎没有意义。</p>
+<p>举个例子，调制解调器路由器以非常高的速率接收网络数据包。 调制解调器必须决定哪个数据包进入哪个线路。 这可以使用map实现，其中键是IP，值是目标线路。 对于这种情况，<code>SplayTreeMap</code>是一个不错的选择，因为大多数IP地址将被多次使用，因此可以从树的根目录找到它们。</p>
+]]></content>
+      <categories>
+        <category>Flutter &amp; Dart</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+        <tag>Dart</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何在Linux终端中将socks5转为http</title>
+    <url>/post/7095dbdd.html</url>
+    <content><![CDATA[<p>最近又开始在家折腾了一下Ubuntu，奈何打开Github都费劲，更别说往Github上提&#x2F;拉代码了。但是我只有socks5的服务，在终端下也难以科学上网，直接export_http也不好用，想起了多年我用一个叫的Privoxy的工具可以将socks5流量转换为http，实现终端科学上网。当然，我不知道是否有更优解，如果有欢迎告诉我呀。</p>
+<h2 id="安装Privoxy"><a href="#安装Privoxy" class="headerlink" title="安装Privoxy"></a>安装Privoxy</h2><p>就那么安装呗</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install install privoxy</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置Privoxy"><a href="#配置Privoxy" class="headerlink" title="配置Privoxy"></a>配置Privoxy</h2><p>用你喜欢的方式打开privoxy的配置文件<code>/etc/privoxy/config</code>，并注释掉下面的一句话：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">listen-address  127.0.0.1:8118</span><br></pre></td></tr></table></figure>
+<p>也就是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># listen-address  127.0.0.1:8118</span><br></pre></td></tr></table></figure>
+<p>也可能是长成这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">listen-address  localhost:8118</span><br></pre></td></tr></table></figure>
+
+<p>最后在文件的末尾追回两行代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">forward-socks5 / 127.0.0.1:1080 .</span><br><span class="line">listen-address 127.0.0.1:8118</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动Privoxy"><a href="#启动Privoxy" class="headerlink" title="启动Privoxy"></a>启动Privoxy</h2><p>保存上述文件之后，记得启动一下Privoxy:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo service privoxy restart</span><br></pre></td></tr></table></figure>
+<p>这样就完成了sock5到http代理的映射</p>
+<h2 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h2><p>打开终端，输入下面两行命令即可实现当前终端科学上网:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export http_proxy=http://127.0.0.1:8118</span><br><span class="line">export https_proxy=http://127.0.0.1:8118</span><br></pre></td></tr></table></figure>
+<p>当然，如果你想一劳永逸，可以给他加到类似<code>etc/environment</code>这样的地方。</p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>我想说，当个码农真不容易</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Socks5</tag>
+        <tag>科学上网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>欢迎来到我的博客</title>
+    <url>/post/b250e9bb.html</url>
+    <content><![CDATA[<h2 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h2><p>终于弄好了。</p>
+]]></content>
+  </entry>
+</search>
