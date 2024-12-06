@@ -6,7 +6,7 @@
   <link href="https://jarvanmo.github.io/atom.xml" rel="self"/>
   
   <link href="https://jarvanmo.github.io/"/>
-  <updated>2024-11-29T07:31:40.396Z</updated>
+  <updated>2024-12-06T12:15:22.985Z</updated>
   <id>https://jarvanmo.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何在Linux终端中将socks5转为http</title>
+    <link href="https://jarvanmo.github.io/post/7095dbdd.html"/>
+    <id>https://jarvanmo.github.io/post/7095dbdd.html</id>
+    <published>2024-12-06T11:48:23.530Z</published>
+    <updated>2024-12-06T12:15:22.985Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近又开始在家折腾了一下Ubuntu，奈何打开Github都费劲，更别说往Github上提&#x2F;拉代码了。但是我只有socks5的服务，在终端下也难以<br>科学上网，直接export_http也不好用，想起了多年我用一个叫的Privoxy的工具可以将socks5流量转换为http，实现终端科学上网。当然，我不知道是否有更优解，如果有欢迎告诉我呀。</p><h2 id="安装Privoxy"><a href="#安装Privoxy" class="headerlink" title="安装Privoxy"></a>安装Privoxy</h2><p>就那么安装呗</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install install privoxy</span><br></pre></td></tr></table></figure><h2 id="配置Privoxy"><a href="#配置Privoxy" class="headerlink" title="配置Privoxy"></a>配置Privoxy</h2><p>用你喜欢的方式打开privoxy的配置文件<code>/etc/privoxy/config</code>，并注释掉下面的一句话：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen-address  127.0.0.1:8118</span><br></pre></td></tr></table></figure><p>也就是这样的：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># listen-address  127.0.0.1:8118</span><br></pre></td></tr></table></figure><p>也可能是长成这样的：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen-address  localhost:8118</span><br></pre></td></tr></table></figure><p>最后在文件的末尾追回两行代码：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">forward-socks5 / 127.0.0.1:1080 .</span><br><span class="line">listen-address 127.0.0.1:8118</span><br></pre></td></tr></table></figure><h2 id="启动Privoxy"><a href="#启动Privoxy" class="headerlink" title="启动Privoxy"></a>启动Privoxy</h2><p>保存上述文件之后，记得启动一下Privoxy:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service privoxy restart</span><br></pre></td></tr></table></figure><p>这样就完成了sock5到http代理的映射</p><h2 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h2><p>打开终端，输入下面两行命令即可实现当前终端科学上网:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy=http://127.0.0.1:8118</span><br><span class="line">export https_proxy=http://127.0.0.1:8118</span><br></pre></td></tr></table></figure><p>当然，如果你想一劳永逸，可以给他加到类似<code>etc/environment</code>这样的地方。</p><h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>我想说，当个码农真不容易</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;最近又开始在家折腾了一下Ubuntu，奈何打开Github都费劲，更别说往Github上提&amp;#x2F;拉代码了。但是我只有socks5的服务，在终端下也难以&lt;br&gt;科学上网，直接export_http也不好用，想起了多年我用一个叫的Privoxy的工具可以将socks5流量</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>简单谈谈dart中几种Map的不同</title>
