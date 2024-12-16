@@ -1,3 +1,4 @@
+https://jarvanmo.github.io/post/7095dbdd.html
 https://jarvanmo.github.io/post/bb488c43.html
 https://jarvanmo.github.io/archives/index.html
 https://jarvanmo.github.io/tags/index.html
@@ -12,6 +13,7 @@ https://jarvanmo.github.io/tags/Dart/
 https://jarvanmo.github.io/tags/Socks5/
 https://jarvanmo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/
 https://jarvanmo.github.io/tags/Android/
+https://jarvanmo.github.io/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/
 https://jarvanmo.github.io/categories/Flutter-Dart/
 https://jarvanmo.github.io/categories/%E5%85%B6%E4%BB%96/
 https://jarvanmo.github.io/categories/Android/
