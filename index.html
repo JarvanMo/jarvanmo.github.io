@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,6 +178,96 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://jarvanmo.github.io/post/132ede47.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jarvanmo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jarvanmo's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jarvanmo's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/132ede47.html" class="post-title-link" itemprop="url">为什么Compose可以嵌套？</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-12-20 20:49:58" itemprop="dateCreated datePublished" datetime="2024-12-20T20:49:58+08:00">2024-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-12-21 16:23:52" itemprop="dateModified" datetime="2024-12-21T16:23:52+08:00">2024-12-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">为什么Compose可以无限嵌套而传统的xml却不可以？</span><br></pre></td></tr></table></figure>
+<p>要搞清楚这个问题首先还是得先了解二者绘制的差异，我说的可能不对，如果有问题，欢迎大家指出。</p>
+<h2 id="xml"><a href="#xml" class="headerlink" title="xml"></a>xml</h2><p>以前我们用传统的xml绘制布局的时候都是要尽量减少布局的层级关系，以提升性能，因为层级的增加，会大幅拖慢界面的加载。这种拖慢的主要原因在于各种Layout的重复测量。尽管从客观上来说重复测量都布局来说是必不可少的，但它也确实使页面的加载时间随着页面层级的增加而产生了指数级的增长。一个ViewGroup对子view的测量可能是二次，三次甚至多次测量。对于一个会二次测量的系统来说，它的每个View的测量算法的时间复杂度是O(2^n)，其中n是View的层级深度。当然了，这只是一个粗略的估计，因为不是第个View都会进行2次测量，也有会进行三次甚至多次测量。一句话说是就是，这种测量方式会导致View的层级每加深一级，它的加载时间就会翻一倍。</p>
+<h2 id="Compose"><a href="#Compose" class="headerlink" title="Compose"></a>Compose</h2><p>Compose可以无限套娃的原理也很简单，那就是禁止二次测量。如果每个组件对每个子组件只测量一次，那它的时间复杂度则降低到了O(n)。</p>
+<h2 id="为什么Compose可以禁止二测量"><a href="#为什么Compose可以禁止二测量" class="headerlink" title="为什么Compose可以禁止二测量"></a>为什么Compose可以禁止二测量</h2><p>既然禁止二次测量可以极大提升View的布局效率，那为什么传统的View不直接禁掉？因为有用呗。既然有用，那Compose就不用了吗？因为Compose引入一个新的概念——Intrinsic Measurement，官方翻译叫固有特性测量。所谓的固有特性测量就是Compose允许父组件在对子组件进行正测测量之前，先测量一下这个子组件的“固有尺寸”，换大白话说就是，子组件内容的最大或者最小尺寸是多少，这其实就先进行这种粗略的测量，然后再进行最终的正式测量。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
