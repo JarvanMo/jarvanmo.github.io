@@ -6,7 +6,7 @@
   <link href="https://jarvanmo.github.io/atom.xml" rel="self"/>
   
   <link href="https://jarvanmo.github.io/"/>
-  <updated>2024-12-21T08:23:52.248Z</updated>
+  <updated>2025-03-01T13:50:37.871Z</updated>
   <id>https://jarvanmo.github.io/</id>
   
   <author>
@@ -17,13 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Flutter插件中引用本地framework</title>
+    <link href="https://jarvanmo.github.io/post/22ac6568.html"/>
+    <id>https://jarvanmo.github.io/post/22ac6568.html</id>
+    <published>2025-03-01T13:25:10.857Z</published>
+    <updated>2025-03-01T13:50:37.871Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近搞了搞Flutter plugin，发现iOS端已经默认使用SPM了，但是SPM目前也比较少，而我拿到的Framework又是纯本地的，不需要发布到远程仓库，但始终无法正确添加。本身不是什么难题，只是因为我不太了解SPM。</p><p>如果有误，望指正。</p><h2 id="framework转成-xcframework"><a href="#framework转成-xcframework" class="headerlink" title=".framework转成.xcframework"></a>.framework转成.xcframework</h2><p>由于对方给我的是一堆<code>.framework</code>文件，而SPM不支持<code>.framework</code>，所以要先把<code>.framework</code>变成<code>.xcframework</code>：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -create-xcframework -output SampleFramework.xcframework -framework path/to/a.framework -framework path/to/b.framework </span><br><span class="line"></span><br></pre></td></tr></table></figure><p>完成之后你会得到一个<code>Sample.xcframework</code>.</p><h2 id="集成xcframework"><a href="#集成xcframework" class="headerlink" title="集成xcframework"></a>集成xcframework</h2><p>假设你的插件名字叫作<code>plugin_name</code>，并且你要集成的<code>xcframework</code>名字叫作<code>SampleFramework.xcframework</code>。</p><p>首先，把<code>xcframework</code>复制到<code>ios/plugin_name</code>。然后找<code>Package.swift</code>, 然后把<code>SampleFramework.xcframework</code>添加进去。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">package</span> <span class="operator">=</span> <span class="type">Package</span>(</span><br><span class="line">    name: <span class="string">&quot;plugin_name&quot;</span>,</span><br><span class="line">    platforms: [</span><br><span class="line">        .iOS(<span class="string">&quot;12.0&quot;</span>)</span><br><span class="line">    ],</span><br><span class="line">    products: [</span><br><span class="line">        .library(name: <span class="string">&quot;plugin_name&quot;</span>, targets: [<span class="string">&quot;plugin_name&quot;</span>,<span class="string">&quot;SampleFramework&quot;</span>]) <span class="comment">// 这里添加你的framework名称</span></span><br><span class="line">    ],</span><br><span class="line">    dependencies: [</span><br><span class="line">        .package(path: <span class="string">&quot;Sources/plugin_name/SampleFramework.xcframework&quot;</span>) <span class="comment">// 这里添加你的framework</span></span><br><span class="line">    ],</span><br><span class="line">    targets: [</span><br><span class="line">        .target(</span><br><span class="line">            name: <span class="string">&quot;plugin_name&quot;</span>,</span><br><span class="line">            dependencies: [</span><br><span class="line">                .byName(name: <span class="string">&quot;SampleFramework&quot;</span>) <span class="comment">// 这里添加你的framework</span></span><br><span class="line">            ],</span><br><span class="line">            resources: []</span><br><span class="line">            </span><br><span class="line">        ),</span><br><span class="line">        </span><br><span class="line">        .binaryTarget(name: <span class="string">&quot;SampleFramework&quot;</span>, path: <span class="string">&quot;SampleFramework.xcframework&quot;</span>) <span class="comment">//这里添加你的framework</span></span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近搞了搞Flutter plugin，发现iOS端已经默认使用SPM了，但是SPM目前也比较少，而我拿到的Framework又是纯本地的，</summary>
+      
+    
+    
+    
+    <category term="Flutter" scheme="https://jarvanmo.github.io/categories/Flutter/"/>
+    
+    
+    <category term="Flutter" scheme="https://jarvanmo.github.io/tags/Flutter/"/>
+    
+    <category term="SPM" scheme="https://jarvanmo.github.io/tags/SPM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>为什么Compose可以嵌套？</title>
     <link href="https://jarvanmo.github.io/post/132ede47.html"/>
     <id>https://jarvanmo.github.io/post/132ede47.html</id>
     <published>2024-12-20T12:49:58.670Z</published>
-    <updated>2024-12-21T08:23:52.248Z</updated>
+    <updated>2024-12-22T00:04:03.401Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>问题：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">为什么Compose可以无限嵌套而传统的xml却不可以？</span><br></pre></td></tr></table></figure><p>要搞清楚这个问题首先还是得先了解二者绘制的差异，我说的可能不对，如果有问题，欢迎大家指出。</p><h2 id="xml"><a href="#xml" class="headerlink" title="xml"></a>xml</h2><p>以前我们用传统的xml绘制布局的时候都是要尽量减少布局的层级关系，以提升性能，因为层级的增加，会大幅拖慢界面的加载。这种拖慢的主要原因在于各种Layout的重复测量。尽管从客观上来说重复测量都布局来说是必不可少的，但它也确实使页面的加载时间随着页面层级的增加而产生了指数级的增长。一个ViewGroup对子view的测量可能是二次，三次甚至多次测量。对于一个会二次测量的系统来说，它的每个View的测量算法的时间复杂度是O(2^n)，其中n是View的层级深度。当然了，这只是一个粗略的估计，因为不是第个View都会进行2次测量，也有会进行三次甚至多次测量。一句话说是就是，这种测量方式会导致View的层级每加深一级，它的加载时间就会翻一倍。</p><h2 id="Compose"><a href="#Compose" class="headerlink" title="Compose"></a>Compose</h2><p>Compose可以无限套娃的原理也很简单，那就是禁止二次测量。如果每个组件对每个子组件只测量一次，那它的时间复杂度则降低到了O(n)。</p><h2 id="为什么Compose可以禁止二测量"><a href="#为什么Compose可以禁止二测量" class="headerlink" title="为什么Compose可以禁止二测量"></a>为什么Compose可以禁止二测量</h2><p>既然禁止二次测量可以极大提升View的布局效率，那为什么传统的View不直接禁掉？因为有用呗。既然有用，那Compose就不用了吗？因为Compose引入一个新的概念——Intrinsic Measurement，官方翻译叫固有特性测量。所谓的固有特性测量就是Compose允许父组件在对子组件进行正测测量之前，先测量一下这个子组件的“固有尺寸”，换大白话说就是，子组件内容的最大或者最小尺寸是多少，这其实就先进行这种粗略的测量，然后再进行最终的正式测量。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>问题：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">为什么Compose可以无限嵌套而传统的xml却不可以？</span><br></pre></td></tr></table></figure><p>要搞清楚这个问题首先还是得先了解二者绘制的差异，我说的可能不对，如果有问题，欢迎大家指出。</p><h2 id="xml"><a href="#xml" class="headerlink" title="xml"></a>xml</h2><p>以前我们用传统的xml绘制布局的时候都是要尽量减少布局的层级关系，以提升性能，因为层级的增加，会大幅拖慢界面的加载。这种拖慢的主要原因在于各种Layout的重复测量。尽管从客观上来说重复测量都布局来说是必不可少的，但它也确实使页面的加载时间随着页面层级的增加而产生了指数级的增长。一个ViewGroup对子view的测量可能是二次，三次甚至多次测量。对于一个会二次测量的系统来说，它的每个View的测量算法的时间复杂度是O(2^n)，其中n是View的层级深度。当然了，这只是一个粗略的估计，因为不是第个View都会进行2次测量，也有会进行三次甚至多次测量。一句话说是就是，这种测量方式会导致View的层级每加深一级，它的加载时间就会翻一倍。</p><h2 id="Compose"><a href="#Compose" class="headerlink" title="Compose"></a>Compose</h2><p>Compose可以无限套娃的原理也很简单，那就是禁止二次测量。如果每个组件对每个子组件只测量一次，那它的时间复杂度则降低到了O(n)。</p><h2 id="为什么Compose可以禁止二次测量"><a href="#为什么Compose可以禁止二次测量" class="headerlink" title="为什么Compose可以禁止二次测量"></a>为什么Compose可以禁止二次测量</h2><p>既然禁止二次测量可以极大提升View的布局效率，那为什么传统的View不直接禁掉？因为有用呗。既然有用，那Compose就不用了吗？因为Compose引入一个新的概念——Intrinsic Measurement，官方翻译叫固有特性测量。所谓的固有特性测量就是Compose允许父组件在对子组件进行正测测量之前，先测量一下这个子组件的“固有尺寸”，换大白话说就是，子组件内容的最大或者最小尺寸是多少，这其实就先进行这种粗略的测量，然后再进行最终的正式测量。</p>]]></content>
     
     
       

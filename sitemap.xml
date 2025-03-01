@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jarvanmo.github.io/post/22ac6568.html</loc>
+    
+    <lastmod>2025-03-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://jarvanmo.github.io/post/132ede47.html</loc>
     
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2024-12-22</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -94,7 +103,7 @@
 
   <url>
     <loc>https://jarvanmo.github.io/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -102,42 +111,49 @@
   
   <url>
     <loc>https://jarvanmo.github.io/tags/Flutter/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/tags/Dart/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/tags/Socks5/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/tags/Android/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jarvanmo.github.io/tags/SPM/</loc>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -146,21 +162,28 @@
   
   <url>
     <loc>https://jarvanmo.github.io/categories/Flutter-Dart/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jarvanmo.github.io/categories/Android/</loc>
-    <lastmod>2024-12-21</lastmod>
+    <lastmod>2025-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jarvanmo.github.io/categories/Flutter/</loc>
+    <lastmod>2025-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
