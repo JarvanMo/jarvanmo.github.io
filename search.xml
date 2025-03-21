@@ -215,4 +215,37 @@
         <tag>SPM</tag>
       </tags>
   </entry>
+  <entry>
+    <title>安装Cocoapods并更新ruby版本</title>
+    <url>/post/7ff93631.html</url>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在新电脑中尝试安装cocoapods，但发现最新的cocoapods需要的ruby版本比系统自带的要高。。。</p>
+<h1 id="操作起来"><a href="#操作起来" class="headerlink" title="操作起来"></a>操作起来</h1><p>首先，需要安装cocoapod:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods</span><br></pre></td></tr></table></figure>
+<p>如果你想查看进度可以加一个标识符<code>-V</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods -V</span><br></pre></td></tr></table></figure>
+
+<p>然后用brew更新ruby：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">brew install ruby</span><br></pre></td></tr></table></figure>
+
+<p>更新ruby：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;export PATH=&quot;/opt/homebrew/opt/ruby/bin:$PATH&#x27; &gt;&gt;  ~/.zshrc</span><br><span class="line">sudo gem update --system</span><br></pre></td></tr></table></figure>
+
+<p>用<code>ruby -v</code>查看一下版本吧。</p>
+<h2 id="gem-太慢"><a href="#gem-太慢" class="headerlink" title="gem 太慢"></a>gem 太慢</h2><p>用镜像吧：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/ --remove https:/rubygems.org/</span><br></pre></td></tr></table></figure>
+
+<p>查看一下是否替换成功：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gem sources --list</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Cocoapod</tag>
+      </tags>
+  </entry>
 </search>

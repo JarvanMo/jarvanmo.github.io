@@ -6,7 +6,7 @@
   <link href="https://jarvanmo.github.io/atom.xml" rel="self"/>
   
   <link href="https://jarvanmo.github.io/"/>
-  <updated>2025-03-01T13:50:37.871Z</updated>
+  <updated>2025-03-21T07:23:21.094Z</updated>
   <id>https://jarvanmo.github.io/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>安装Cocoapods并更新ruby版本</title>
+    <link href="https://jarvanmo.github.io/post/7ff93631.html"/>
+    <id>https://jarvanmo.github.io/post/7ff93631.html</id>
+    <published>2025-03-21T07:11:58.757Z</published>
+    <updated>2025-03-21T07:23:21.094Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在新电脑中尝试安装cocoapods，但发现最新的cocoapods需要的ruby版本比系统自带的要高。。。</p><h1 id="操作起来"><a href="#操作起来" class="headerlink" title="操作起来"></a>操作起来</h1><p>首先，需要安装cocoapod:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install cocoapods</span><br></pre></td></tr></table></figure><p>如果你想查看进度可以加一个标识符<code>-V</code></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install cocoapods -V</span><br></pre></td></tr></table></figure><p>然后用brew更新ruby：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ruby</span><br></pre></td></tr></table></figure><p>更新ruby：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export PATH=&quot;/opt/homebrew/opt/ruby/bin:$PATH&#x27; &gt;&gt;  ~/.zshrc</span><br><span class="line">sudo gem update --system</span><br></pre></td></tr></table></figure><p>用<code>ruby -v</code>查看一下版本吧。</p><h2 id="gem-太慢"><a href="#gem-太慢" class="headerlink" title="gem 太慢"></a>gem 太慢</h2><p>用镜像吧：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --add https://gems.ruby-china.com/ --remove https:/rubygems.org/</span><br></pre></td></tr></table></figure><p>查看一下是否替换成功：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem sources --list</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;最近在新电脑中尝试安装cocoapods，但发现最新的cocoapods需要的ruby版本比系统自带的要高。。。&lt;/p&gt;
+&lt;h1 id=&quot;操</summary>
+      
+    
+    
+    
+    <category term="其他" scheme="https://jarvanmo.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+    <category term="iOS" scheme="https://jarvanmo.github.io/tags/iOS/"/>
+    
+    <category term="Cocoapod" scheme="https://jarvanmo.github.io/tags/Cocoapod/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Flutter插件中引用本地framework</title>
     <link href="https://jarvanmo.github.io/post/22ac6568.html"/>
     <id>https://jarvanmo.github.io/post/22ac6568.html</id>
     <published>2025-03-01T13:25:10.857Z</published>
-    <updated>2025-03-01T13:50:37.871Z</updated>
+    <updated>2025-03-01T13:51:29.453Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近搞了搞Flutter plugin，发现iOS端已经默认使用SPM了，但是SPM目前也比较少，而我拿到的Framework又是纯本地的，不需要发布到远程仓库，但始终无法正确添加。本身不是什么难题，只是因为我不太了解SPM。</p><p>如果有误，望指正。</p><h2 id="framework转成-xcframework"><a href="#framework转成-xcframework" class="headerlink" title=".framework转成.xcframework"></a>.framework转成.xcframework</h2><p>由于对方给我的是一堆<code>.framework</code>文件，而SPM不支持<code>.framework</code>，所以要先把<code>.framework</code>变成<code>.xcframework</code>：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -create-xcframework -output SampleFramework.xcframework -framework path/to/a.framework -framework path/to/b.framework </span><br><span class="line"></span><br></pre></td></tr></table></figure><p>完成之后你会得到一个<code>Sample.xcframework</code>.</p><h2 id="集成xcframework"><a href="#集成xcframework" class="headerlink" title="集成xcframework"></a>集成xcframework</h2><p>假设你的插件名字叫作<code>plugin_name</code>，并且你要集成的<code>xcframework</code>名字叫作<code>SampleFramework.xcframework</code>。</p><p>首先，把<code>xcframework</code>复制到<code>ios/plugin_name</code>。然后找<code>Package.swift</code>, 然后把<code>SampleFramework.xcframework</code>添加进去。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">package</span> <span class="operator">=</span> <span class="type">Package</span>(</span><br><span class="line">    name: <span class="string">&quot;plugin_name&quot;</span>,</span><br><span class="line">    platforms: [</span><br><span class="line">        .iOS(<span class="string">&quot;12.0&quot;</span>)</span><br><span class="line">    ],</span><br><span class="line">    products: [</span><br><span class="line">        .library(name: <span class="string">&quot;plugin_name&quot;</span>, targets: [<span class="string">&quot;plugin_name&quot;</span>,<span class="string">&quot;SampleFramework&quot;</span>]) <span class="comment">// 这里添加你的framework名称</span></span><br><span class="line">    ],</span><br><span class="line">    dependencies: [</span><br><span class="line">        .package(path: <span class="string">&quot;Sources/plugin_name/SampleFramework.xcframework&quot;</span>) <span class="comment">// 这里添加你的framework</span></span><br><span class="line">    ],</span><br><span class="line">    targets: [</span><br><span class="line">        .target(</span><br><span class="line">            name: <span class="string">&quot;plugin_name&quot;</span>,</span><br><span class="line">            dependencies: [</span><br><span class="line">                .byName(name: <span class="string">&quot;SampleFramework&quot;</span>) <span class="comment">// 这里添加你的framework</span></span><br><span class="line">            ],</span><br><span class="line">            resources: []</span><br><span class="line">            </span><br><span class="line">        ),</span><br><span class="line">        </span><br><span class="line">        .binaryTarget(name: <span class="string">&quot;SampleFramework&quot;</span>, path: <span class="string">&quot;SampleFramework.xcframework&quot;</span>) <span class="comment">//这里添加你的framework</span></span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
     
