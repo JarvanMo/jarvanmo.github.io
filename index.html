@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,6 +178,127 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://jarvanmo.github.io/post/50c9c131.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jarvanmo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jarvanmo's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jarvanmo's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/post/50c9c131.html" class="post-title-link" itemprop="url">flutter工程化之动态配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-04-16 22:49:58 / 修改时间：22:51:27" itemprop="dateCreated datePublished" datetime="2025-04-16T22:49:58+08:00">2025-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>很多公司在实际开发中都有不少动态化配置的需求，比如说要根据不同app渠道加载不同的URL、secrets等配置项。这其中的实现方法也有很多，今天的应用案例则是<code>--dart-define</code> 和<code>--dart-define-from-file</code>。</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>一处配置多处使用</li>
+<li>尽量少用第三方库</li>
+<li>非入侵</li>
+</ul>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><h3 id="–dart-define"><a href="#–dart-define" class="headerlink" title="–dart-define"></a>–dart-define</h3><p>使用方法简单粗暴，直接把如下的命令添加上就好，无论是<code>flutter build</code>还是<code>flutter build</code>都可以：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--dart-define API_URL=api.openflutter.dev</span><br></pre></td></tr></table></figure>
+<p>如果有需要添加多个变量也是可以的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--dart-define API_URL=api.openflutter.dev  --dart-define MAP_KEY=ds5jkh2jjhjkljh</span><br></pre></td></tr></table></figure>
+
+<p>如果我有大量的变量怎么办？</p>
+<h3 id="–dart-define-from-file"><a href="#–dart-define-from-file" class="headerlink" title="–dart-define-from-file"></a>–dart-define-from-file</h3><p>我们也可以从文件中加载配置文件，文件格式可以是<code>json</code>也可以是<code>.env</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--dart-define-from-file path/to/config.json</span><br><span class="line">--dart-define-from-file path/to/.env</span><br></pre></td></tr></table></figure>
+
+<h3 id="Flutter端获取变量"><a href="#Flutter端获取变量" class="headerlink" title="Flutter端获取变量"></a>Flutter端获取变量</h3><p>很简单：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">final</span> url = <span class="keyword">const</span> <span class="built_in">String</span>.fromEnvironment(<span class="string">&quot;API_URL&quot;</span>);</span><br><span class="line"><span class="keyword">final</span> logEnabled = <span class="keyword">const</span> <span class="built_in">bool</span>.fromEnvironment(<span class="string">&quot;LOG_ENABLED&quot;</span>);</span><br><span class="line"><span class="keyword">final</span> level = <span class="keyword">const</span> <span class="built_in">bool</span>.fromEnvironment(<span class="string">&quot;LEVEL&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>补充一句：</p>
+<blockquote>
+<p>千万别忘了写<code>const</code>。</p>
+</blockquote>
+<p>如果你使用的<code>.env</code>文件做为配置项，你也可以使用一个代码叫<a target="_blank" rel="noopener" href="https://pub.dev/packages/envied">envied</a>的代码生成工具，以简化相关操作。</p>
+<p>但很多时候仅仅在Flutter端获取这些配置是不够的，我们也会需要在Android侧和iOS侧获取相关配置。</p>
+<h3 id="Android-端"><a href="#Android-端" class="headerlink" title="Android 端"></a>Android 端</h3><p>找到<code>app/build.gradle.kts</code>，旧的Flutter应该是<code>app/build.gradle</code>，然后添加一些代码：<br>···kotlin<br>val dartDefines &#x3D; mutableMapOf&lt;String, String&gt;()</p>
+<p>if (project.hasProperty(“dart-defines”)) {<br>    project.property(“dart-defines”).toString().split(“,”).forEach { entry -&gt;<br>        val decoded &#x3D; String(Base64.getDecoder().decode(entry), Charsets.UTF_8)<br>        val pair &#x3D; decoded.split(“&#x3D;”)<br>        if (pair.size &#x3D;&#x3D; 2) {<br>            dartDefines[pair[0]] &#x3D; pair[1]<br>        }<br>    }<br>}</p>
+<p>defaultConfig {<br>    applicationId &#x3D; “com.example.flutter_dash_testing”<br>    minSdk &#x3D; flutter.minSdkVersion<br>    targetSdk &#x3D; flutter.targetSdkVersion<br>    versionCode &#x3D; flutter.versionCode<br>    versionName &#x3D; flutter.versionName<br>    dartDefines[“API_URL”]?.let {<br>        resValue(“string”, “api_url”, it)<br>    }<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### iOS侧</span><br><span class="line"></span><br><span class="line">当我们用 Flutter 编译 iOS 端时，会在`./ios/Flutter`目录下生成两个文件`Generated.xcconfig`、`flutter_export_environment.sh`。</span><br><span class="line">在这两个文件中我们都会过来的`dart-define`:</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line">// flutter_export_environment.sh</span><br><span class="line">export &quot;DART_DEFINES=S0VZPWtleSBpcyB0ZXN0aW5n,QVBJX1VSTD1odHRwczovL2FwaS5leGFtcGxlLmNvbQ==,QVBQX05BTUU9SGVsbG8gV29ybGQ=,RkxVVFRFUl9BUFBfRkxBVk9SPXN0YWdpbmc=&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Generated.xcconfig</span><br><span class="line">DART_DEFINES=S0VZPWtleSBpcyB0ZXN0aW5n,QVBJX1VSTD1odHRwczovL2FwaS5leGFtcGxlLmNvbQ==,QVBQX05BTUU9SGVsbG8gV29ybGQ=,RkxVVFRFUl9BUFBfRkxBVk9SPXN0YWdpbmc=</span><br></pre></td></tr></table></figure>
+
+<p>首先我们需要把这些经过base64编码过的变量解析到某个<code>.xcconfig</code>中，然后再把该文件在<code>Release.xcconfig</code>和<code>Debug.xcconfig</code>引入，假设它的名字是<code>GeneratedDartDefines.xcconfig</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// ./ios/Flutter/Debug.xcconfig</span><br><span class="line"></span><br><span class="line">#include &quot;Generated.xcconfig&quot;</span><br><span class="line">#include &quot;GeneratedDartDefines.xcconfig&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// ./ios/Flutter/Release.xcconfig</span><br><span class="line"></span><br><span class="line">#include &quot;Generated.xcconfig&quot;</span><br><span class="line">#include &quot;GeneratedDartDefines.xcconfig&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>假设我们要生成的文件名字为<code>GeneratedDartDefines.xcconfig</code>。首先我们在<code>./ios/Flutter</code>目录下生成一个空的<code>GeneratedDartDefines.xcconfig</code>。然后打开Xcode，在<code>Targets=&gt;Runner=&gt;Build Phases</code>选项卡中点击+号，选择<code>New Run Script Phase</code>并把如下代码复制进去：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">DART_DEFINES=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$&#123;SRCROOT&#125;</span>/Flutter/Generated.xcconfig&quot;</span> | grep <span class="string">&quot;DART_DEFINES&quot;</span> | sed -E <span class="string">&#x27;s/DART_DEFINES=(.+)/\1/&#x27;</span>)</span><br><span class="line"></span><br><span class="line">IFS=<span class="string">&#x27;,&#x27;</span> <span class="built_in">read</span> -ra DEFINES &lt;&lt;&lt; <span class="string">&quot;<span class="variable">$DART_DEFINES</span>&quot;</span></span><br><span class="line">ALL_DECODED=<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> DEFINE <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;DEFINES[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># Decode Base64</span></span><br><span class="line">    DECODED=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$DEFINE</span>&quot;</span> | <span class="built_in">base64</span> --decode)</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;DECODED <span class="variable">$DECODED</span>&quot;</span></span><br><span class="line">    <span class="comment"># Skip Flutter internal variables</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$DECODED</span>&quot;</span> != FLUTTER_* ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$ALL_DECODED</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            ALL_DECODED=<span class="string">&quot;<span class="variable">$DECODED</span>&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="comment"># Use proper newline insertion</span></span><br><span class="line">            ALL_DECODED=<span class="string">&quot;<span class="variable">$&#123;ALL_DECODED&#125;</span>&quot;</span>$<span class="string">&#x27;\n&#x27;</span><span class="string">&quot;<span class="variable">$&#123;DECODED&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$ALL_DECODED</span>&quot;</span> &gt; <span class="string">&quot;<span class="variable">$&#123;SRCROOT&#125;</span>/Flutter/GeneratedDartDefines.xcconfig&quot;</span></span><br><span class="line"></span><br><span class="line">````</span><br><span class="line">&gt;</span><br><span class="line"></span><br><span class="line">最后，按需修改下`Info.plist`即可，如修改app名字：</span><br></pre></td></tr></table></figure>
+<p>&#x2F;&#x2F; .&#x2F;ios&#x2F;Runner&#x2F;Info.plist<br>&#x2F;&#x2F; …<br><key>CFBundleName</key><br><string>$(APP_NAME)</string><br>&#x2F;&#x2F; …</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 开发具怎么配置</span><br><span class="line"></span><br><span class="line">### Android Studio</span><br><span class="line"></span><br><span class="line">在绿色的运行按钮左侧有个下拉框，然后点击`Edit Configurations` ，其中有一个项目叫做`Addtional run args`，把`--dart-define-from-file .env`类似的参数添加进去就好了。当然你也可以选择保存配置，这样大家就可以共享这个快捷键了。</span><br><span class="line"></span><br><span class="line">### VSCode</span><br><span class="line"></span><br><span class="line">改改`launch.json`：</span><br><span class="line"></span><br><span class="line">```json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;version&quot;: &quot;0.2.0&quot;,</span><br><span class="line">  &quot;configurations&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot;: &quot;Flutter Dev&quot;,</span><br><span class="line">      &quot;request&quot;: &quot;launch&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;dart&quot;,</span><br><span class="line">      &quot;flutterMode&quot;: &quot;debug&quot;,</span><br><span class="line">      &quot;args&quot;: [</span><br><span class="line">        &quot;--dart-define=API_URL=https://api.dev.example.com&quot;,</span><br><span class="line">        &quot;--dart-define=APP_ENVIRONMENT=development&quot;,</span><br><span class="line">        &quot;--flavor=dev&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot;: &quot;Flutter Staging&quot;,</span><br><span class="line">      &quot;request&quot;: &quot;launch&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;dart&quot;,</span><br><span class="line">      &quot;flutterMode&quot;: &quot;debug&quot;,</span><br><span class="line">      &quot;args&quot;: [</span><br><span class="line">        &quot;--dart-define-from-file=.env&quot;,</span><br><span class="line">        &quot;--flavor=staging&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
