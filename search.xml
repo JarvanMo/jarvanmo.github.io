@@ -338,4 +338,70 @@
         <tag>iOS</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Flutter架构的小小探讨</title>
+    <url>/post/842a9426.html</url>
+    <content><![CDATA[<p>最近要新开发一个Flutter，需要设计一个架构。我在刚接Flutter的时候，我记得Google官方人员曾说过他们内部使用的是BLoC模式，彼时我也尝试用BLoC开发Flutter应用，而Flutter经过这么多年的进化，现在是否有新的架构？官方是否有推荐架构？我一查，还真就有一个<a href="https://docs.flutter.dev/app-architecture">官方架构指南</a>。<br>通过阅读这份架构指南，我发现Flutter团队建议采用MVVM来组织Flutter应用程序的各个层级，遵循在其他移动框架（如原生Kotlin和Swift）中所采用的既定模式。但当我们讨论应用程序架构和状态管理选项时，我们也不能完全忽视BLoC方法的优势。为什么Flutter团队没有建议使用 BLoC 方法呢？</p>
+<h2 id="理解基础知识"><a href="#理解基础知识" class="headerlink" title="理解基础知识"></a>理解基础知识</h2><p>BLoC即Business Logic Component，它代表业务逻辑组件。它遵循响应式编程范式，使用Streams来管理状态和事件。BLoC 的主要目标是强制实现单向数据流，使业务逻辑与UI完全分离。</p>
+<h3 id="BLoC的几个关键组成部分："><a href="#BLoC的几个关键组成部分：" class="headerlink" title="BLoC的几个关键组成部分："></a>BLoC的几个关键组成部分：</h3><ul>
+<li><strong>事件</strong>：用户操作或外部触发因素。</li>
+<li><strong>状态</strong>：表示UI当前的状态。</li>
+<li><strong>业务逻辑组件（Blocs）</strong>：通过Streams把事件映射到状态。</li>
+</ul>
+<p><img src="https://p3-xtjj-sign.byteimg.com/tos-cn-i-73owjymdk6/15de39783e7b457aaeb11420d544afa3~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgSmFydmFuTW8=:q75.awebp?rk3s=f64ab15b&x-expires=1745505596&x-signature=gUUTW9HD56+64Z59tUQXAiaJ4c4=" alt="BLoC中的的单向数据流"></p>
+<p>另一方面，MVVM（Model-View-ViewModel）模式提供了一种更简单的状态管理方式。在这种模式中，ViewModel充当了用户界面（View）和数据（Model）之间的中间人。它通过使用 <code>notifyListeners()</code> 方法来通知用户界面状态的变化。 </p>
+<p><img src="https://p3-xtjj-sign.byteimg.com/tos-cn-i-73owjymdk6/6ef6c29361c941458c2c32b12078735e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgSmFydmFuTW8=:q75.awebp?rk3s=f64ab15b&x-expires=1745505596&x-signature=Ol0hwV3yOpWLVLVXgJ+SY+cfLvc=" alt="基于mvvm的架构"></p>
+<p>你有没有注意到它们之间的一些相似之处呢？😅 他们两个都旨在高效地管理状态，并以响应式的方式更新UI，而且它们都能与Flutter组件无缝集成，同时也都支持异步操作，不过BLoC的Streams更自然地适用于复杂的工作流程。</p>
+<h3 id="MVVM的几个关键组成部分："><a href="#MVVM的几个关键组成部分：" class="headerlink" title="MVVM的几个关键组成部分："></a>MVVM的几个关键组成部分：</h3><ul>
+<li><strong>模型（Model）</strong>：代表app的数据。</li>
+<li><strong>视图模型（ViewModel）</strong>：管理状态和业务逻辑。</li>
+<li><strong>视图（View）</strong>：显示UI并观察数据变化。</li>
+</ul>
+<p><img src="https://p3-xtjj-sign.byteimg.com/tos-cn-i-73owjymdk6/48a7a43cbff0494ea3759f80f62e0f48~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgSmFydmFuTW8=:q75.awebp?rk3s=f64ab15b&x-expires=1745505596&x-signature=/GOaaoE3aje2nEv7BeOZZMNACMw=" alt="MVVM方式的组成部分"></p>
+<p>考虑到它们基本上都遵循着同一个思路，就是把不同的任务分开处理，形成一个条理清晰的分层架构。那咱们就来重点关注一下不同点吧。</p>
+<h2 id="主要区别"><a href="#主要区别" class="headerlink" title="主要区别"></a>主要区别</h2><ol>
+<li><strong>数据流</strong><ul>
+<li><strong>BLoC</strong>：强制实行单向数据流。事件触发状态变化，然后状态被发送到UI。</li>
+<li><strong>MVVM</strong>：采用双向数据流，在这种模式下，状态更新和UI交互可以更自由地发生。</li>
+</ul>
+</li>
+<li><strong>样板代码量</strong><ul>
+<li><strong>BLoC</strong>：需要更多的样板代码，包括对事件、状态以及 BLoC 类的定义。</li>
+<li><strong>MVVM</strong>：样板代码量极少，可以通过 <code>notifyListeners()</code> 或 <code>ValueNotifier.value</code> 直接进行更新。</li>
+</ul>
+</li>
+<li><strong>性能</strong><ul>
+<li><strong>BLoC</strong>：流在处理复杂的异步操作方面效率极高。</li>
+<li><strong>MVVM</strong>：轻量级且速度快，但在规模更大、更复杂的应用程序中可能会力不从心。</li>
+</ul>
+</li>
+<li><strong>学习曲线</strong><ul>
+<li><strong>BLoC</strong>：由于涉及诸如Streams和流控制器StreamControllers等响应式编程概念，学习曲线较陡峭。</li>
+<li><strong>MVVM</strong>：更容易学习，尤其适合初学者。</li>
+</ul>
+</li>
+<li><strong>可测试性</strong><ul>
+<li><strong>BLoC</strong>：具有出色的可测试性，允许独立测试状态转换。</li>
+<li><strong>MVVM</strong>：可测试性适中，需要花费精力将逻辑与用户界面解耦。</li>
+</ul>
+</li>
+<li><strong>可扩展性</strong><ul>
+<li><strong>BLoC</strong>：对于具有共享状态的大型复杂应用程序来说是理想之选。</li>
+<li><strong>MVVM</strong>：由于在大型应用程序中可能存在紧密耦合的问题，所以最适合中小型应用程序。</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>不管是BLoC，还是搭配ChangeNotifier或者ValueNotifier用的MVVM模式，都能把Flutter代码弄得更清爽、更好维护。至于到底该选哪个，得看你项目体量多大、有多复杂，还有你所偏好的结构层级。 </p>
+<h2 id="何时选择-BLoC"><a href="#何时选择-BLoC" class="headerlink" title="何时选择 BLoC"></a>何时选择 BLoC</h2><p>如果你正在构建一个大型、复杂的应用程序，并且希望借助严格的架构规则让自己安心，那么就选择 BLoC。BLoC 的事件到状态模式以及不可变性使其更易于测试、调试和跟踪数据流。如果你的团队看重可预测性以及一种定义清晰且可良好扩展的方法，那么BLoC是一个可靠的选择。</p>
+<h2 id="何时选择使用通知器（Notifiers）的-MVVM-模式"><a href="#何时选择使用通知器（Notifiers）的-MVVM-模式" class="headerlink" title="何时选择使用通知器（Notifiers）的 MVVM 模式"></a>何时选择使用通知器（Notifiers）的 MVVM 模式</h2><p>如果你在寻找易于快速实现且容易理解的方案，那么使用 <code>ChangeNotifier</code> 或 <code>ValueNotifier</code> 的 MVVM 模式可能适合你的口味。它非常适合中小型项目，或者当你刚刚起步且不需要BLoC的全部复杂功能时。你在设置上花费的时间会更少，而有更多时间进行快速迭代，不过随着时间推移，你需要保持自律，以免造成混乱。</p>
+<p>通过了解每种模式的细微差别，你便能从中挑选出契合团队实际需求，且适配应用程序复杂程度的架构模式。无论最终选定哪种，都意味着你在编写更简洁、高效的 Flutter 代码之路上，迈出了坚实而关键的一步。</p>
+<p>对于你的 Flutter 项目，你更喜欢哪种方法呢？请在评论区告诉我吧！ </p>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
 </search>
